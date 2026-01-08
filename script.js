@@ -98,6 +98,7 @@ magneticBtns.forEach((btn) => {
 const scrollIndicator = document.querySelector(".scroll-indicator");
 
 window.addEventListener("scroll", () => {
+  if (!scrollIndicator) return;
   if (window.scrollY > 50) {
     scrollIndicator.style.opacity = "0";
     scrollIndicator.style.pointerEvents = "none";
