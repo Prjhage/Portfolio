@@ -361,6 +361,7 @@ body.dark .about-card {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 40px;
+  perspective: 1200px;
 }
 
 .project-card {
@@ -375,9 +376,11 @@ body.dark .about-card {
     12px 12px 25px var(--shadow-dark),
     -12px -12px 25px var(--shadow-light);
   transition:
-    transform 0.35s ease,
-    box-shadow 0.35s ease;
+    box-shadow 0.35s ease,
+    border-color 0.35s ease;
   border: 1px solid var(--secondary);
+  transform-style: preserve-3d;
+  will-change: transform;
 }
 
 /* Remove reveal delay after animation to ensure smooth hover */
@@ -387,10 +390,9 @@ body.dark .about-card {
 }
 
 .project-card:hover {
-  transform: translateY(-12px);
   box-shadow:
-    20px 20px 40px var(--shadow-dark),
-    -20px -20px 40px var(--shadow-light);
+    20px 20px 42px var(--shadow-dark),
+    -20px -20px 42px var(--shadow-light);
 }
 
 .project-img {
@@ -404,6 +406,12 @@ body.dark .about-card {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: top center;
+  transition: transform 0.45s ease;
+}
+
+.project-card:hover .project-img img {
+  transform: scale(1.04);
 }
 
 .project-card h3 {

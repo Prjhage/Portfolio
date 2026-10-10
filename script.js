@@ -21,7 +21,12 @@ revealElements.forEach((el) => {
 });
 
 /* ===== TYPING ANIMATION ===== */
-const roles = ["MERN Stack Developer", "DSA Enthusiast"];
+const roles = [
+  "Full Stack Developer",
+  "Agentic AI System Developer",
+
+  "DSA Enthusiast"
+];
 
 let roleIndex = 0;
 let charIndex = 0;
@@ -110,7 +115,7 @@ hoverElements.forEach((el) => {
 });
 
 /* ===== MAGNETIC BUTTON EFFECT ===== */
-const magneticBtns = document.querySelectorAll(".project-links a");
+const magneticBtns = document.querySelectorAll(".project-links a, .resume-btn, .socials a");
 
 magneticBtns.forEach((btn) => {
   btn.addEventListener("mousemove", (e) => {
@@ -123,6 +128,53 @@ magneticBtns.forEach((btn) => {
 
   btn.addEventListener("mouseleave", () => {
     btn.style.transform = "translate(0, 0)";
+  });
+});
+
+/* ===== REALISTIC 3D TILT ANIMATION FOR PROJECT CARDS ===== */
+const tiltCards = document.querySelectorAll(".project-card");
+tiltCards.forEach((card) => {
+  let isHovering = false;
+  let targetX = 0;
+  let targetY = 0;
+  let currentX = 0;
+  let currentY = 0;
+  let frameId = null;
+
+  function renderTilt() {
+    if (!isHovering && Math.abs(currentX) < 0.05 && Math.abs(currentY) < 0.05) {
+      card.style.transform = "perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0) scale3d(1, 1, 1)";
+      return;
+    }
+    // Natural spring lerp for realistic inertial physical response
+    currentX += (targetX - currentX) * 0.14;
+    currentY += (targetY - currentY) * 0.14;
+    const lift = isHovering ? -10 : 0;
+    const scale = isHovering ? 1.02 : 1;
+    card.style.transform = `perspective(1000px) rotateX(${currentX.toFixed(2)}deg) rotateY(${currentY.toFixed(2)}deg) translateY(${lift}px) scale3d(${scale}, ${scale}, 1)`;
+    frameId = requestAnimationFrame(renderTilt);
+  }
+
+  card.addEventListener("mouseenter", () => {
+    isHovering = true;
+    cancelAnimationFrame(frameId);
+    frameId = requestAnimationFrame(renderTilt);
+  });
+
+  card.addEventListener("mousemove", (e) => {
+    const rect = card.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+    targetX = ((y - centerY) / centerY) * -7;
+    targetY = ((x - centerX) / centerX) * 7;
+  });
+
+  card.addEventListener("mouseleave", () => {
+    isHovering = false;
+    targetX = 0;
+    targetY = 0;
   });
 });
 
